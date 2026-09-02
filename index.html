@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShiftComp</title>
+<meta name="description" content="Starts with the schedule you already bid. Just log what changed.">
+
+<meta property="og:title" content="ShiftComp">
+<meta property="og:description" content="Starts with the schedule you already bid. Just log what changed.">
+<meta property="og:image" content="https://vonhogler.github.io/shiftcomp-site/assets/og-image.png">
+<meta property="og:url" content="https://shiftcomp.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ShiftComp">
+<meta name="twitter:image" content="https://vonhogler.github.io/shiftcomp-site/assets/og-image.png">
+
+<style>
+  :root {
+    --bg: #f5f5f0;
+    --card: #ffffff;
+    --border: #e0e0d8;
+    --text: #1a1a18;
+    --muted: #666660;
+    --muted-2: #888880;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  section {
+    margin-bottom: 36px;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+  }
+
+  .hero img.wordmark {
+    width: 130px;
+    height: auto;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+    margin: 0 0 12px;
+    font-weight: 700;
+  }
+
+  .hero p.subline {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
+
+  .hero p.scroll-hint {
+    font-size: 0.8rem;
+    color: var(--muted-2);
+    margin: 0;
+  }
+
+  /* Carousel */
+  .carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding: 4px 4px 12px;
+    margin: 0 -4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-card {
+    flex: 0 0 82%;
+    scroll-snap-align: center;
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .carousel-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .carousel-card .caption {
+    padding: 16px;
+  }
+
+  .carousel-card .caption .lead {
+    font-weight: 700;
+    margin: 0 0 4px;
+    font-size: 0.95rem;
+  }
+
+  .carousel-card .caption .support {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    display: inline-block;
+  }
+
+  /* Generic card */
+  .card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+  }
+
+  .card h2 {
+    font-size: 1.05rem;
+    margin: 0 0 12px;
+    font-weight: 700;
+  }
+
+  .card p {
+    margin: 0 0 12px;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .card a.feedback-link {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 4px;
+  }
+
+  /* Install steps */
+  .install-intro {
+    margin-bottom: 16px;
+  }
+
+  .install-intro h2 {
+    font-size: 1.05rem;
+    margin: 0 0 8px;
+    font-weight: 700;
+  }
+
+  .install-intro p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .install-columns {
+    display: flex;
+    gap: 16px;
+  }
+
+  .install-columns .card {
+    flex: 1;
+  }
+
+  .install-columns h3 {
+    font-size: 0.95rem;
+    margin: 0 0 12px;
+    font-weight: 700;
+  }
+
+  .install-columns ol {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .install-columns li {
+    margin-bottom: 8px;
+  }
+
+  .install-columns li:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 420px) {
+    .install-columns {
+      flex-direction: column;
+    }
+  }
+
+  .before-start p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .before-start strong {
+    color: var(--text);
+  }
+
+  /* CTA */
+  .cta {
+    background: #1a1a18;
+    color: #f5f5f0;
+    text-align: center;
+    padding: 32px 22px;
+  }
+
+  .cta p.label {
+    margin: 0 0 16px;
+    font-size: 0.95rem;
+    color: #cfcfc8;
+  }
+
+  .cta a.button {
+    display: inline-block;
+    background: #ffffff;
+    color: #1a1a18;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 1rem;
+  }
+
+  .cta p.fine {
+    margin: 16px 0 0;
+    font-size: 0.8rem;
+    color: #9a9a92;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  footer .links {
+    font-size: 0.9rem;
+    margin: 0 0 12px;
+  }
+
+  footer .links a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  footer .disclaimer {
+    font-size: 0.78rem;
+    color: var(--muted-2);
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <section class="hero">
+    <img class="wordmark" src="assets/shiftcomp-wordmark.svg" alt="ShiftComp">
+    <h1>You don't build your calendar by hand. It's already there. You just fix what changes.</h1>
+    <p class="subline">OT, DT, pickups, giveaways: log the difference, and your schedule and estimated pay update from there.</p>
+    <p class="scroll-hint">See how it works &darr; (download link is below)</p>
+  </section>
+
+  <section>
+    <div class="carousel">
+      <div class="carousel-card">
+        <img src="assets/01-month.png.png" alt="Month calendar view with bid block shifts filled in automatically">
+        <div class="caption">
+          <p class="lead">Your bid is already there.</p>
+          <p class="support">Set your bid block once and your regular shifts fill in automatically.</p>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="assets/02-day-detail.png.png" alt="Day detail screen for logging OT, DT, pickups, and giveaways">
+        <div class="caption">
+          <p class="lead">Just log what changed.</p>
+          <p class="support">OT, DT, pickups, giveaways, leaving early. Tap the day and enter it.</p>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="assets/03-pay-breakdown.png.png" alt="Pay period breakdown showing regular time, overtime, deductions, and take-home pay">
+        <div class="caption">
+          <p class="lead">See where your check is headed.</p>
+          <p class="support">Regular time, OT, deductions, and estimated take-home per period.</p>
+        </div>
+      </div>
+      <div class="carousel-card">
+        <img src="assets/04-week.png.png" alt="Week view of the schedule">
+        <div class="caption">
+          <p class="lead">Your schedule stays useful too.</p>
+          <p class="support">Month and week views keep the actual schedule easy to see.</p>
+        </div>
+      </div>
+    </div>
+    <div class="dots">
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>I built this because I wanted it myself.</h2>
+    <p>I was already keeping track of my schedule and trying to figure out what OT, DT, pickups, and everything else were going to do to my check. I wanted one place that handled both, without having to enter the same schedule over and over.</p>
+    <p>ShiftComp is what I ended up building. I'm testing it with other Ground Ops employees now, so if something doesn't work, or the numbers just look wrong, let me know.</p>
+    <a class="feedback-link" href="mailto:customerservice@vonhogler.com">Send feedback &rarr;</a>
+  </section>
+
+  <section>
+    <div class="install-intro">
+      <h2>Install it like an app</h2>
+      <p>ShiftComp runs from your browser, but you can add it to your home screen and use it like a normal app. Once installed, it also works offline.</p>
+    </div>
+    <div class="install-columns">
+      <div class="card">
+        <h3>On Android</h3>
+        <ol>
+          <li>Open the link in Chrome</li>
+          <li>Tap the &#8942; menu, then "Add to Home screen"</li>
+          <li>Tap Add. It'll open like a normal app from there</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>On iPhone</h3>
+        <ol>
+          <li>Open the link in Safari</li>
+          <li>Tap the Share icon, then "Add to Home Screen"</li>
+          <li>Tap Add. It'll open like a normal app from there</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="card before-start">
+    <p><strong>Before you start:</strong> grab a recent pay stub if you have one. A regular one works best, without a lot of overtime or extra hours mixed in. Setup asks a few questions about your pay and deductions.</p>
+  </section>
+
+  <section class="cta">
+    <p class="label">Ready to try it?</p>
+    <a class="button" href="https://vonhogler.github.io/shift-pay-tracker/">Open ShiftComp &rarr;</a>
+    <p class="fine">Free to use &middot; No account &middot; Works offline</p>
+  </section>
+
+  <footer>
+    <p class="links">
+      <a href="https://ko-fi.com/shiftcalc">Support on Ko-fi</a> &middot; <a href="mailto:customerservice@vonhogler.com">Feedback</a>
+    </p>
+    <p class="disclaimer">Not affiliated with or endorsed by Southwest Airlines. An independent tool built by a fellow ground ops employee.</p>
+  </footer>
+
+</div>
+</body>
+</html>
